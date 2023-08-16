@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "hardhat test",
-    "deploy": "hardhat run --network hardhat scripts/deploy.ts"
+    "deploy": "hardhat run --network hardhat scripts/deploy.ts",
+    "script": "hardhat node"
   },
   "author": "",
   "license": "MIT",
