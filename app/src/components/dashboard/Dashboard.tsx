@@ -85,12 +85,6 @@ export default function Dashboard({ children }: { children: ReactNode }) {
           >
             ERC-721 MyNFT Project
           </Typography>
-          {/* 알람 아이콘 off */}
-          {/* <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open}>
