@@ -28,7 +28,7 @@ export default function Home() {
     if (isLogin && !isConnected) {
       connectAsync({ connector });
     }
-  }, [isLogin]);
+  }, [isLogin, isConnected]);
 
   // 메타마스크 커넥터 가져오기
   const connector = connectors.find(
