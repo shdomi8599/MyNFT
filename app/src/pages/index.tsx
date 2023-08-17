@@ -1,6 +1,6 @@
 import { isLoginState } from "@/states";
 import { Box, Button } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toHex } from "viem/utils";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 import { Connector } from "wagmi/connectors";
@@ -17,9 +17,6 @@ export default function Home() {
   const { disconnect } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
   const { isLoading, connectAsync, connectors } = useConnect();
-
-  // hardhat 네트워크 상태
-  const [isHardhat, setisHardhat] = useState(false);
 
   // 로그인 상태
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
@@ -59,6 +56,7 @@ export default function Home() {
         params: [{ chainId: toHex(chainId) }],
       });
 
+      // 로그인 상태 변경
       setIsLogin(true);
 
       // 서명
