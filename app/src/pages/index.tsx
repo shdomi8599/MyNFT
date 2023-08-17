@@ -45,7 +45,9 @@ export default function Home() {
     } catch (e) {
       console.log(e);
 
-      disconnect();
+      setIsLogin(false);
+
+      return disconnect();
     }
   };
 
@@ -56,8 +58,15 @@ export default function Home() {
         method: "wallet_switchEthereumChain",
         params: [{ chainId: toHex(chainId) }],
       });
+
+      setIsLogin(true);
+
+      // 서명
+      await sign();
     } catch (e) {
       console.log(e);
+
+      return disconnect();
     }
   };
 
@@ -71,26 +80,14 @@ export default function Home() {
       const data = await connectAsync({ connector });
 
       if (data.chain.id !== 31337) {
-        try {
-          // 네트워크 변경
-          await switchNetwork(31337).then(() => setisHardhat(true));
-        } catch (e) {
-          disconnect();
-
-          return alert("Please change network to hardhat");
-        }
+        return await switchNetwork(31337);
       }
 
-      if (isHardhat || data.chain.id === 31337) {
-        // 서명
-        await sign();
+      // 로그인 상태 변경
+      setIsLogin(true);
 
-        // 로그인 상태 변경
-        return setIsLogin(true);
-      }
-
-      // 위의 조건에 맞지 않다면 연결 해제
-      return disconnect();
+      // 서명
+      await sign();
     } catch (e) {
       console.log(e);
 
