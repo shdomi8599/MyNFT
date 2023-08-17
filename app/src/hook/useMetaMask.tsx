@@ -1,10 +1,11 @@
 import { isLoginState } from "@/states";
 import { ethers } from "ethers";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { useAccount, useConnect, Connector, useBalance } from "wagmi";
 
 export const useMetaMask = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const isLogin = useRecoilValue(isLoginState);
   const { connectAsync, connectors } = useConnect();
   const { address } = useAccount();
@@ -50,5 +51,7 @@ export const useMetaMask = () => {
     isLogin,
     address,
     balance,
+    isLoading,
+    setIsLoading,
   };
 };

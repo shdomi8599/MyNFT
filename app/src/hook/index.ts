@@ -1,3 +1,3 @@
-import { useMetaMask } from "./useMetamask";
+import { useMetaMask } from "./useMetaMask";
 
 export { useMetaMask };

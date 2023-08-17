@@ -1,4 +1,4 @@
-import { isLoginState } from "@/states";
+import { isLoginState, networkState } from "@/states";
 import {
   Box,
   Button,
@@ -8,7 +8,7 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { toHex } from "viem/utils";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 import { Connector } from "wagmi/connectors";
@@ -27,7 +27,7 @@ export default function Home() {
   const { isLoading, connectAsync, connectors } = useConnect();
 
   // 선택된 네트워크 상태
-  const [network, seNewtwork] = useState("hardhat");
+  const [network, seNewtwork] = useRecoilState(networkState);
   const handleNetwork = (event: ChangeEvent<HTMLInputElement>) => {
     seNewtwork(event.target.value);
   };
