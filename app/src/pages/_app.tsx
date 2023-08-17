@@ -1,5 +1,4 @@
 import Dashboard from "@/components/dashboard/Dashboard";
-import { ALCHEMY_ID } from "@/const";
 import "@/styles/globals.css";
 import { Box } from "@mui/material";
 import type { AppProps } from "next/app";
@@ -8,7 +7,6 @@ import { RecoilRoot } from "recoil";
 import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { hardhat } from "wagmi/chains";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { alchemyProvider } from "wagmi/providers/alchemy";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 
 const queryClient = new QueryClient();
@@ -22,7 +20,6 @@ export default function App({ Component, pageProps }: AppProps) {
           http: "http://localhost:8545/",
         }),
       }),
-      alchemyProvider({ apiKey: ALCHEMY_ID }),
     ]
   );
 

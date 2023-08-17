@@ -1,6 +1,6 @@
 import { isLoginState } from "@/states";
 import { Box, Button } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toHex } from "viem/utils";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 import { Connector } from "wagmi/connectors";
@@ -17,6 +17,9 @@ export default function Home() {
   const { disconnect } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
   const { isLoading, connectAsync, connectors } = useConnect();
+
+  // hardhat 네트워크 상태
+  const [isHardhat, setisHardhat] = useState(false);
 
   // 로그인 상태
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
@@ -62,6 +65,7 @@ export default function Home() {
     if (!connector.ready) {
       return window.open("https://metamask.io/download/", "_blank");
     }
+
     try {
       // 연결
       const data = await connectAsync({ connector });
@@ -69,7 +73,7 @@ export default function Home() {
       if (data.chain.id !== 31337) {
         try {
           // 네트워크 변경
-          await switchNetwork(31337);
+          await switchNetwork(31337).then(() => setisHardhat(true));
         } catch (e) {
           disconnect();
 
@@ -77,11 +81,16 @@ export default function Home() {
         }
       }
 
-      // 서명
-      await sign();
+      if (isHardhat || data.chain.id === 31337) {
+        // 서명
+        await sign();
 
-      // 로그인 상태 변경
-      setIsLogin(true);
+        // 로그인 상태 변경
+        return setIsLogin(true);
+      }
+
+      // 위의 조건에 맞지 않다면 연결 해제
+      return disconnect();
     } catch (e) {
       console.log(e);
 
@@ -105,7 +114,7 @@ export default function Home() {
         disabled={isDisabled}
         onClick={() => handleConnect(connector)}
       >
-        {!isConnected ? "Connect Wallet" : "Connected"}
+        {!isDisabled ? "Connect Wallet" : "Connected"}
       </Button>
     </Box>
   );
