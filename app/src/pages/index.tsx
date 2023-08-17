@@ -1,6 +1,14 @@
 import { isLoginState } from "@/states";
-import { Box, Button } from "@mui/material";
-import { useEffect } from "react";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  Radio,
+  RadioGroup,
+} from "@mui/material";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toHex } from "viem/utils";
 import { useAccount, useConnect, useDisconnect, useSignMessage } from "wagmi";
 import { Connector } from "wagmi/connectors";
@@ -17,6 +25,12 @@ export default function Home() {
   const { disconnect } = useDisconnect();
   const { signMessageAsync } = useSignMessage();
   const { isLoading, connectAsync, connectors } = useConnect();
+
+  // 선택된 네트워크 상태
+  const [network, seNewtwork] = useState("hardhat");
+  const handleNetwork = (event: ChangeEvent<HTMLInputElement>) => {
+    seNewtwork(event.target.value);
+  };
 
   // 로그인 상태
   const [isLogin, setIsLogin] = useRecoilState(isLoginState);
@@ -77,8 +91,14 @@ export default function Home() {
       // 연결
       const data = await connectAsync({ connector });
 
-      if (data.chain.id !== 31337) {
-        return await switchNetwork(31337);
+      if (data.chain.id !== 31337 || 5) {
+        if (network === "hardhat") {
+          return await switchNetwork(31337);
+        }
+
+        if (network === "goerli") {
+          return await switchNetwork(5);
+        }
       }
 
       // 로그인 상태 변경
@@ -103,6 +123,27 @@ export default function Home() {
         alignItems: "center",
       }}
     >
+      <FormControl>
+        <FormLabel id="demo-radio-buttons-group-label">Network</FormLabel>
+        <RadioGroup
+          defaultValue="hardhat"
+          onChange={handleNetwork}
+          value={network}
+        >
+          <FormControlLabel
+            value={"hardhat"}
+            disabled={isDisabled}
+            control={<Radio />}
+            label="Hardhat"
+          />
+          <FormControlLabel
+            value="goerli"
+            disabled={isDisabled}
+            control={<Radio />}
+            label="Goerli"
+          />
+        </RadioGroup>
+      </FormControl>
       <Button
         sx={{ width: "15%", height: "10%", fontSize: "1rem" }}
         variant="contained"
