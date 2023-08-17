@@ -1,15 +1,12 @@
 import { abi, goerliContractAddress, hardhatContractAddress } from "@/const";
 import { useMetaMask } from "@/hook";
-import { networkState } from "@/states";
 import { Box, Button, CircularProgress } from "@mui/material";
 import { useEffect } from "react";
-import { useRecoilValue } from "recoil";
 import { useContractWrite } from "wagmi";
 import { waitForTransaction } from "wagmi/actions";
 
 export default function Mint() {
-  const { address, isLogin, isLoading, setIsLoading } = useMetaMask();
-  const network = useRecoilValue(networkState);
+  const { address, isLogin, isLoading, setIsLoading, network } = useMetaMask();
 
   const {
     data: mint,
