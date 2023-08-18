@@ -32,7 +32,7 @@ export const useMetaMask = () => {
 
   // 계정에 이더가 없다면 1이더 보내주기
   useEffect(() => {
-    if (address && balance?.value === BigInt(0)) {
+    if (address && balance?.value === BigInt(0) && network === "hardhat") {
       const giveEther = async () => {
         const privateKey = process.env.NEXT_PUBLIC_HARDHAT_SIGNER_PRIVATE_KEY;
 
@@ -52,7 +52,7 @@ export const useMetaMask = () => {
 
       giveEther();
     }
-  }, [address]);
+  }, [address, network, balance]);
 
   return {
     isLogin,
