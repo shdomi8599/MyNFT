@@ -1,7 +1,9 @@
 import { isLoginState, networkState } from "@/states";
-import { ethers } from "ethers";
 import { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
+import { createWalletClient, http, parseEther } from "viem";
+import { privateKeyToAccount } from "viem/accounts";
+import { hardhat } from "viem/chains";
 import { useAccount, useConnect, Connector, useBalance } from "wagmi";
 
 export const useMetaMask = () => {
@@ -31,20 +33,24 @@ export const useMetaMask = () => {
   // 계정에 이더가 없다면 1이더 보내주기
   useEffect(() => {
     if (address && balance?.value === BigInt(0)) {
-      const hardhatWallet = new ethers.Wallet(
-        process.env.NEXT_PUBLIC_HARDHAT_SIGNER_PRIVATE_KEY as string
-      );
+      const giveEther = async () => {
+        const privateKey = process.env.NEXT_PUBLIC_HARDHAT_SIGNER_PRIVATE_KEY;
 
-      const provider = new ethers.providers.JsonRpcProvider(
-        "http://localhost:8545/"
-      );
+        const client = createWalletClient({
+          chain: hardhat,
+          transport: http(),
+        });
 
-      const walletWithProvider = hardhatWallet.connect(provider);
+        const account = privateKeyToAccount(`0x${privateKey}`);
 
-      walletWithProvider.sendTransaction({
-        to: address,
-        value: ethers.utils.parseEther("1"),
-      });
+        await client.sendTransaction({
+          account,
+          to: address,
+          value: parseEther("1"),
+        });
+      };
+
+      giveEther();
     }
   }, [address]);
 
