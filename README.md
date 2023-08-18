@@ -17,7 +17,7 @@
 ### Goerli 네트워크에 컨트랙트 배포
 `` npm run deploy-goerli ``
 
-### Hardhat 네트워크 컨트랙트 로컬 실행
+### Hardhat 네트워크 로컬 실행
 `` npm run script ``
 
 * Hardhat 프로젝트 주의사항
