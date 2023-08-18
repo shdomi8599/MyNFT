@@ -15,7 +15,7 @@ contract MyToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
     constructor() ERC721("MyToken", "MTK") {}
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://app.xociety.io/";
+        return "ipfs://QmV7SEz3o2HasGMbtwVZrXBWSHk8PVRSRcu6EMMYGBapP4";
     }
 
     function safeMint(address to, string memory uri) public onlyOwner {
