@@ -8,7 +8,7 @@ export const hardhatContractAddress =
   "0x5FbDB2315678afecb367f032d93F642f64180aa3";
 
 export const goerliContractAddress =
-  "0xF4d9DC3A26DB79147B54199328fD4d3031463e9E";
+  "0xdC96D1F8F7FC053db24440FC014c258a4CFb02a6";
 
 export const abi = [
   {

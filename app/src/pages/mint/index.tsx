@@ -17,7 +17,7 @@ export default function Mint() {
       network === "hardhat" ? hardhatContractAddress : goerliContractAddress,
     abi,
     functionName: "safeMint",
-    args: [address, "http://MyNFT-Project.com/"],
+    args: [address, "ipfs://QmV7SEz3o2HasGMbtwVZrXBWSHk8PVRSRcu6EMMYGBapP4"],
     value: BigInt(0),
     onError: (e) => {
       console.log(e);
