@@ -14,15 +14,14 @@ contract MyToken is ERC721, ERC721URIStorage, ERC721Burnable, Ownable {
 
     constructor() ERC721("MyToken", "MTK") {}
 
-    function _baseURI() internal pure override returns (string memory) {
-        return "ipfs://QmV7SEz3o2HasGMbtwVZrXBWSHk8PVRSRcu6EMMYGBapP4";
-    }
-
-    function safeMint(address to, string memory uri) public onlyOwner {
+    function safeMint(address to) public onlyOwner {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
-        _setTokenURI(tokenId, uri);
+    }
+
+    function setBaseURI(string calldata baseURI) external onlyOwner {
+        _uri = baseURI;
     }
 
     // The following functions are overrides required by Solidity.
